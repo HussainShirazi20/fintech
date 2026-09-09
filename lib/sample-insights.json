@@ -1,0 +1,28 @@
+{
+  "insights": [
+    {
+      "id": "insight-1",
+      "observation": "Food delivery plus eating out (Swiggy, Zomato, Domino's, Third Wave) adds up to roughly ₹4,680 across 8 orders — almost matching your whole month of groceries at ₹8,847.",
+      "whyItMatters": "As a student, delivery feels like a small convenience each time, but the monthly total is where it quietly competes with the savings habit you said you want. For a family earner, the same number would read as shared meals rather than solo orders — context changes the story.",
+      "action": "This week, swap 2 delivery orders for a home-cooked meal or a mess plan and move the ~₹700 saved into your SIP the same day.",
+      "txnIds": ["txn-40", "txn-04", "txn-28"],
+      "amounts": [999, 649, 715]
+    },
+    {
+      "id": "insight-2",
+      "observation": "Your one Delhi trip cost ₹7,398 (IndiGo ₹5,499 + OYO ₹1,899) — the single biggest event in the month, bigger than rent-adjacent bills combined.",
+      "whyItMatters": "One-off trips like this are exactly what irregular income needs a buffer for: the money is well spent, but without a travel sinking fund it lands entirely on one month. A professional with regular salary absorbs it; a freelancer feels it twice.",
+      "action": "Start a ₹1,000/month auto-transfer labelled 'next trip' — 15 minutes in your banking app, then forget it.",
+      "txnIds": ["txn-33", "txn-34"],
+      "amounts": [5499, 1899]
+    },
+    {
+      "id": "insight-3",
+      "observation": "Three quiet subscriptions — Netflix ₹649, Spotify ₹119, YouTube Premium ₹139 — total ~₹907/month, or ~₹10,884 a year, charged whether you watch or not.",
+      "whyItMatters": "Subscriptions are the opposite of your weekend movie night (PVR ₹890, concert ₹1,999): those you chose and remember, these renew silently. With entertainment as a priority, keeping the one you love and pausing the rest protects the fun while trimming the leak.",
+      "action": "Check screen-time for each app this week and pause the least-used one — most cancellations take under 5 minutes.",
+      "txnIds": ["txn-06", "txn-30", "txn-42"],
+      "amounts": [649, 119, 139]
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+date,description,amount,type
+2026-08-01,Salary credit ACME Pvt Ltd,65000,credit
+2026-08-01,House rent UPI,15000,debit
+2026-08-02,DMart grocery run,2840,debit
+2026-08-02,Swiggy dinner order,649,debit
+2026-08-03,Uber trip HSR to Indiranagar,312,debit
+2026-08-03,Netflix monthly plan,649,debit
+2026-08-04,BESCOM electricity bill,1875,debit
+2026-08-05,Blinkit late night snacks,432,debit
+2026-08-06,Zomato lunch,389,debit
+2026-08-07,Petrol HP pump,1500,debit
+2026-08-08,Amazon.in headphones,2499,debit
+2026-08-09,PVR movie tickets x2,890,debit
+2026-08-09,Third Wave Coffee,540,debit
+2026-08-10,Jio prepaid recharge,399,debit
+2026-08-11,Apollo Pharmacy,720,debit
+2026-08-12,Zepto groceries,915,debit
+2026-08-13,Rapido bike ride,85,debit
+2026-08-14,Myntra sale order,1799,debit
+2026-08-15,Freelance invoice payout,12000,credit
+2026-08-15,SIP HDFC Flexicap,5000,debit
+2026-08-16,Cultfit monthly,1179,debit
+2026-08-16,Swiggy late night biryani,459,debit
+2026-08-17,Metro smart card topup,500,debit
+2026-08-18,Udemy course sale,549,debit
+2026-08-19,BigBasket monthly stockup,3420,debit
+2026-08-20,BookMyShow concert,1999,debit
+2026-08-21,Indane gas refill,1106,debit
+2026-08-22,Zomato dinner,715,debit
+2026-08-23,Decathlon running shoes,2999,debit
+2026-08-23,Spotify Premium,119,debit
+2026-08-24,1mg lab test,899,debit
+2026-08-24,Ola airport drop,640,debit
+2026-08-25,IndiGo BLR-DEL flight,5499,debit
+2026-08-26,OYO stay Delhi 1N,1899,debit
+2026-08-27,Swiggy lunch,329,debit
+2026-08-27,ACT Fibernet bill,999,debit
+2026-08-28,Flipkart phone case,499,debit
+2026-08-29,Credit card payment HDFC,12000,debit
+2026-08-29,Blinkit party supplies,1240,debit
+2026-08-30,Dominos family dinner,999,debit
+2026-08-30,Cashback Amazon Pay,250,credit
+2026-08-31,YouTube Premium,139,debit
