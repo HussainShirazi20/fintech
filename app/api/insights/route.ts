@@ -6,7 +6,7 @@ import { fallbackInsights } from "@/lib/fallback-insights";
 import {
   buildInsightsPrompt,
   containsShaming,
-  validateInsights,
+  sanitizeInsights,
 } from "@/lib/insights-prompt";
 import { chatJson, extractJson, isLlmConfigured, sampleInsights } from "@/lib/llm";
 import type { Insight, Transaction } from "@/lib/types";
@@ -49,36 +49,45 @@ export async function POST(req: Request) {
   const { transactions, context, useSampleCache } = parsed.data;
   const txns = transactions as Transaction[];
   const features = computeFeatures(txns);
-  const validIds = new Set(txns.map((t) => t.id));
+  // Largest-first (spend only — Transfers excluded) — used to backfill backing txns when the model cites none.
+  const topTxns = [...txns]
+    .filter((t) => t.type === "debit" && t.category !== "Transfer")
+    .sort((a, b) => b.amount - a.amount)
+    .map((t) => ({ id: t.id, amount: t.amount }));
   const fallback = fallbackInsights(features, txns, context);
 
   let model = "rule-fallback";
-  let llmInsights: Insight[] | null = null;
+  const llmInsights: Insight[] = [];
+
+  const merge = (more: Insight[]) => {
+    for (const ins of more) {
+      if (llmInsights.length >= 3) break;
+      if (!llmInsights.some((x) => x.id === ins.id)) llmInsights.push(ins);
+    }
+  };
 
   try {
     const { text, model: usedModel } = useSampleCache
       ? await sampleInsights()
       : await chatJson(buildInsightsPrompt(features, context));
     model = usedModel;
-    llmInsights = validateInsights(extractJson(text), validIds);
+    merge(sanitizeInsights(extractJson(text), topTxns));
 
-    if (!llmInsights && !useSampleCache && isLlmConfigured()) {
-      // one retry
+    if (llmInsights.length < 3 && !useSampleCache && isLlmConfigured()) {
+      // one retry to fill the missing slots
       const retry = await chatJson(buildInsightsPrompt(features, context));
       model = retry.model;
-      llmInsights = validateInsights(extractJson(retry.text), validIds);
-    } else if (!llmInsights && useSampleCache) {
-      llmInsights = validateInsights(extractJson(text), validIds);
+      merge(sanitizeInsights(extractJson(retry.text), topTxns));
     }
   } catch {
-    llmInsights = null;
+    // fall through to per-slot fallback below
   }
 
   // Per-slot repair: keep valid, non-shaming LLM slots; fill gaps with fallback.
   const seen = new Set<string>();
   const final: Insight[] = [];
   for (let i = 0; i < 3; i++) {
-    const cand = llmInsights?.[i];
+    const cand = llmInsights[i];
     const clean =
       cand &&
       !containsShaming(`${cand.observation} ${cand.whyItMatters} ${cand.action}`) &&

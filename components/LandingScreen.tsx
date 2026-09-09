@@ -30,6 +30,11 @@ export function LandingScreen({ onSample, onUpload }: Props) {
           Drop in a month of transactions, add a little life context, and get
           three grounded insights — not a lecture, a mirror.
         </p>
+        <div className="mx-auto flex max-w-md flex-wrap justify-center gap-2 text-xs text-muted-foreground">
+          <span className="rounded-full border px-3 py-1">What-if simulator</span>
+          <span className="rounded-full border px-3 py-1">Leak detector + trip fund</span>
+          <span className="rounded-full border px-3 py-1">1-tap share card</span>
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">

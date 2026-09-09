@@ -67,7 +67,7 @@ export function InsightCard({
                 {formatINR(backers.reduce((s, t) => s + t.amount, 0))}.
               </DialogDescription>
             </DialogHeader>
-            <TxnTable transactions={backers} />
+            <TxnTable transactions={backers} paginate={false} />
           </DialogContent>
         </Dialog>
       </CardFooter>

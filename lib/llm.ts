@@ -24,7 +24,7 @@ export function isLlmConfigured(): boolean {
   return llmConfig().apiKey.length > 0;
 }
 
-export async function chatJson(prompt: string): Promise<LlmResult> {
+export async function chatJson(prompt: string, maxTokens = 8192): Promise<LlmResult> {
   const { apiKey, model, baseUrl } = llmConfig();
   if (!apiKey) {
     return { text: "", usedFallback: true, model: `${model} (not configured)` };
@@ -38,7 +38,7 @@ export async function chatJson(prompt: string): Promise<LlmResult> {
     body: JSON.stringify({
       model,
       temperature: 0.6,
-      max_tokens: 1500,
+      max_tokens: maxTokens,
       response_format: { type: "json_object" },
       messages: [
         {
@@ -54,8 +54,12 @@ export async function chatJson(prompt: string): Promise<LlmResult> {
     throw new Error(`LLM HTTP ${res.status}: ${body.slice(0, 200)}`);
   }
   const data = await res.json();
-  const text: string = data?.choices?.[0]?.message?.content ?? "";
+  const choice = data?.choices?.[0];
+  const text: string = choice?.message?.content ?? "";
   if (!text) throw new Error("LLM returned empty content");
+  if (choice?.finish_reason === "length") {
+    throw new Error("LLM output truncated (token budget exhausted)");
+  }
   return { text, usedFallback: false, model };
 }
 

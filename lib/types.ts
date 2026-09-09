@@ -44,8 +44,12 @@ export interface CategoryTotal {
 
 export interface Features {
   income: number;
-  outflow: number;
-  savingsRate: number; // 0..1 (can be negative)
+  outflow: number; // spend only — excludes Transfer (money movement, not spend)
+  transferTotal: number; // SIP / credit-card payments / self-transfers
+  investmentTotal: number; // subset of transfers: SIP / mutual fund / NPS / PPF / gold etc.
+  investmentCount: number; // number of investment transactions
+  spendTotal: number; // == outflow, kept explicit so UI can reconcile
+  savingsRate: number; // (income - spend - transfers) / income — cash left
   categoryTotals: CategoryTotal[];
   weekdaySpend: number;
   weekendSpend: number;

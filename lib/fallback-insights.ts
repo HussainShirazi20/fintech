@@ -65,7 +65,7 @@ export function fallbackInsights(
     const weekendTxns = txns
       .filter((t) => {
         const d = new Date(t.date + "T00:00:00").getDay();
-        return t.type === "debit" && (d === 0 || d === 6);
+        return t.type === "debit" && t.category !== "Transfer" && (d === 0 || d === 6);
       })
       .sort((a, b) => b.amount - a.amount)
       .slice(0, 3);
@@ -103,11 +103,11 @@ export function fallbackInsights(
   // 4. Savings rate guard (fills any gap)
   if (out.length < 3) {
     const pct = (features.savingsRate * 100).toFixed(0);
-    const big = [...txns].filter((t) => t.type === "debit").sort((a, b) => b.amount - a.amount).slice(0, 3);
+    const big = [...txns].filter((t) => t.type === "debit" && t.category !== "Transfer").sort((a, b) => b.amount - a.amount).slice(0, 3);
     const ins = toInsight(
       "fallback-4",
       big,
-      `You kept about ${pct}% of what came in (${formatINR(features.income)} in, ${formatINR(features.outflow)} out).`,
+      `You kept about ${pct}% of what came in (${formatINR(features.income)} in, ${formatINR(features.outflow)} spent${features.transferTotal ? ` + ${formatINR(features.transferTotal)} moved as transfers` : ""}).`,
       ctx.lifeStage === "family"
         ? "For a household, even a thin positive margin is a buffer against surprise expenses — consistency beats size."
         : "A visible margin, however small, is what turns income into options later.",
@@ -118,7 +118,7 @@ export function fallbackInsights(
 
   // 5. Largest single expense (guarantees a third distinct slot)
   if (out.length < 3) {
-    const big = [...txns].filter((t) => t.type === "debit").sort((a, b) => b.amount - a.amount).slice(0, 2);
+    const big = [...txns].filter((t) => t.type === "debit" && t.category !== "Transfer").sort((a, b) => b.amount - a.amount).slice(0, 2);
     if (big.length > 0) {
       const share = features.outflow > 0 ? Math.round((big[0].amount / features.outflow) * 100) : 0;
       const ins = toInsight(

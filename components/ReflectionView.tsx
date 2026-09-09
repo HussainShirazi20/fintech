@@ -13,6 +13,9 @@ import { Separator } from "@/components/ui/separator";
 import { CategoryBar, RhythmChart } from "./Charts";
 import { AlignmentMeter } from "./AlignmentMeter";
 import { InsightCard } from "./InsightCard";
+import { ShareCard } from "./ShareCard";
+import { WhatIfSimulator } from "./WhatIfSimulator";
+import { LeakDetector } from "./LeakDetector";
 import { TxnTable } from "./TxnTable";
 import { PrivacyNote } from "./PrivacyNote";
 import { alignmentScore, formatINR } from "@/lib/features";
@@ -38,6 +41,9 @@ export function ReflectionView({
   onTryOtherContext,
 }: Props) {
   const align = alignmentScore(features, context.priorities);
+  const transferTotal = features.transferTotal ?? 0;
+  const totalSpent = features.outflow + transferTotal;
+  const cashLeft = features.income - totalSpent;
 
   return (
     <div className="mx-auto flex w-full max-w-4xl flex-col gap-6 py-8">
@@ -73,22 +79,40 @@ export function ReflectionView({
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-              <Wallet className="h-4 w-4" /> Outflow
+              <Wallet className="h-4 w-4" /> Spent
             </CardTitle>
           </CardHeader>
-          <CardContent className="text-2xl font-bold">{formatINR(features.outflow)}</CardContent>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatINR(totalSpent)}</div>
+            {transferTotal > 0 && (
+              <p className="mt-1 text-xs text-muted-foreground">
+                incl. {formatINR(transferTotal)} transfers (SIP + card payment)
+              </p>
+            )}
+          </CardContent>
         </Card>
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-              <TrendingUp className="h-4 w-4" /> Saved
+              <TrendingUp className="h-4 w-4" /> Cash left
             </CardTitle>
           </CardHeader>
-          <CardContent className="text-2xl font-bold">
-            {(features.savingsRate * 100).toFixed(0)}%
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {(features.savingsRate * 100).toFixed(0)}%
+            </div>
+            <p className="mt-1 text-xs text-muted-foreground">
+              {formatINR(cashLeft)} left of {formatINR(features.income)}
+            </p>
           </CardContent>
         </Card>
       </div>
+      {transferTotal > 0 && (
+        <p className="-mt-2 text-xs text-muted-foreground">
+          {formatINR(features.income)} in = {formatINR(features.outflow)} spend +{" "}
+          {formatINR(transferTotal)} transfers + {formatINR(cashLeft)} left — adds up, nothing missing.
+        </p>
+      )}
 
       <AlignmentMeter
         score={align.score}
@@ -126,9 +150,22 @@ export function ReflectionView({
         </div>
       </div>
 
+      <div>
+        <h3 className="text-lg font-semibold">Make next month lighter</h3>
+        <p className="mb-3 text-sm text-muted-foreground">
+          Play with the numbers — nothing here touches your real data.
+        </p>
+        <div className="grid gap-4 lg:grid-cols-2">
+          <WhatIfSimulator features={features} transactions={transactions} />
+          <LeakDetector features={features} />
+        </div>
+      </div>
+
+      <ShareCard features={features} context={context} insights={insights} />
+
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">All transactions</CardTitle>
+          <CardTitle className="text-base">All transactions ({transactions.length})</CardTitle>
         </CardHeader>
         <CardContent>
           <TxnTable transactions={transactions} compact />

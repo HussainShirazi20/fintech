@@ -2,7 +2,7 @@
   "insights": [
     {
       "id": "insight-1",
-      "observation": "Food delivery plus eating out (Swiggy, Zomato, Domino's, Third Wave) adds up to roughly ₹4,680 across 8 orders — almost matching your whole month of groceries at ₹8,847.",
+      "observation": "Food delivery plus eating out (Swiggy, Zomato, Domino's, Third Wave) adds up to roughly ₹4,080 across 7 orders — about half your whole month of groceries at ₹8,847.",
       "whyItMatters": "As a student, delivery feels like a small convenience each time, but the monthly total is where it quietly competes with the savings habit you said you want. For a family earner, the same number would read as shared meals rather than solo orders — context changes the story.",
       "action": "This week, swap 2 delivery orders for a home-cooked meal or a mess plan and move the ~₹700 saved into your SIP the same day.",
       "txnIds": ["txn-40", "txn-04", "txn-28"],
