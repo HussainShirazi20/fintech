@@ -41,6 +41,8 @@ export function ReflectionView({
   onTryOtherContext,
 }: Props) {
   const align = alignmentScore(features, context.priorities);
+  // Spent headline folds transfers back in (SIP + card payments), so the
+  // cards reconcile: income = spend + transfers + cash left.
   const transferTotal = features.transferTotal ?? 0;
   const totalSpent = features.outflow + transferTotal;
   const cashLeft = features.income - totalSpent;

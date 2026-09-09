@@ -8,6 +8,7 @@ export function buildShareText(
   insights: Insight[]
 ): string {
   const align = alignmentScore(features, context.priorities);
+  // Mirror the dashboard headline: spent includes transfers.
   const transferTotal = features.transferTotal ?? 0;
   const totalSpent = features.outflow + transferTotal;
   const cashLeft = features.income - totalSpent;
